@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <iomanip>
 using namespace std;
 
 
@@ -140,7 +141,10 @@ class LinkedList {
             // search target node
             while (current->getNext() != nullptr) {
                 if (current->getNext()->getUserID() == _userID && current->getNext()->getItemID() == _itemID){
-                    current->setNext(current->getNext()->getNext());
+                    
+                    Node *temp = current->getNext();
+                    current->setNext(temp->getNext());
+                    delete temp;
                     if (_print) cout << "Customer rating (" << _userID << ", " << _itemID << ") is removed successful" << endl;
                     return;
                 }
@@ -244,12 +248,14 @@ void command(LinkedList& _list, string _input) {
 }
 
 int main() {
+    cout << fixed << setprecision(1);
 
     LinkedList list;
-    
-    while (true) {
-        string input;
-        getline(cin, input);
+    string input;
+
+    while (getline(cin, input)) {
+
+        if (input.empty()) continue;
         command(list, input);
     }
 
